@@ -89,9 +89,10 @@ public class DynamicBeat extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 Music buttonPressedMusic = new Music("Button_Click_sound.mp3", false);
-                buttonPressedMusic.start();
+                buttonPressedMusic.start(); //시작버튼 클릭시
                 startButton.setVisible(false); //시작 버튼이 안보이게됩니다.
-                
+                quitButtion.setVisible(false); //나가는 버튼도 안보이게 됩니다.
+                background = new ImageIcon(Main.class.getResource("../image/background.jpg")).getImage();
             }
             
         });
@@ -151,7 +152,7 @@ public class DynamicBeat extends JFrame {
         add(menuBar);
     
         
-        Music music = new Music("bol4.mp3", true);
+        Music music = new Music("데자뷰.mp3", true);
         music.start();
     }
     
