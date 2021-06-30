@@ -392,11 +392,11 @@ public class DynamicBeat extends JFrame {
     public void paint(Graphics g) {
         screenImage = createImage(Main.SCREEN_WIDTH, Main.SCREEN_HEGHT);
         screenGraghic = screenImage.getGraphics(); //스크린 이미지로부터 그래픽스를 얻어옵니다.
-        screenDraw(screenGraghic);
+        screenDraw((Graphics2D) screenGraghic);
         g.drawImage(screenImage, 0, 0, null);
     }
 
-    private void screenDraw(Graphics g) {
+    private void screenDraw(Graphics2D g) {
         g.drawImage(background, 0, 0, null);
         if (isMainScreen) {
             g.drawImage(selectedImage, 340, 100, null);
@@ -420,16 +420,34 @@ public class DynamicBeat extends JFrame {
             g.drawImage(noteRouteLineImage, 948, 30, null);
             g.drawImage(noteRouteLineImage, 1052, 30, null);
             g.drawImage(gameInfoImage, 0, 660, null);
-            g.drawImage(judgementLineImage, 0, 500, null);
+            g.drawImage(judgementLineImage, 0, 580, null);
 
-            g.drawImage(noteBasicImage, 228, 120,null);
-            g.drawImage(noteBasicImage, 332, 580,null);
-            g.drawImage(noteBasicImage, 436, 500,null);
-            g.drawImage(noteBasicImage, 540, 340,null);
-            g.drawImage(noteBasicImage, 640, 340,null);
-            g.drawImage(noteBasicImage, 744, 325,null);
-            g.drawImage(noteBasicImage, 848, 305,null);
-            g.drawImage(noteBasicImage, 952, 305,null);
+            g.drawImage(noteBasicImage, 228, 120, null);
+            g.drawImage(noteBasicImage, 332, 580, null);
+            g.drawImage(noteBasicImage, 436, 500, null);
+            g.drawImage(noteBasicImage, 540, 340, null);
+            g.drawImage(noteBasicImage, 640, 340, null);
+            g.drawImage(noteBasicImage, 744, 325, null);
+            g.drawImage(noteBasicImage, 848, 305, null);
+            g.drawImage(noteBasicImage, 952, 305, null);
+            g.setColor(Color.white);
+            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); //글씨에 안티엘리 적용.
+            g.setFont(new Font("AppleSDGothicNeoR00", Font.PLAIN, 30));
+            g.drawString("볼빨간 사춘기 - 심술", 20, 702);
+            g.drawString("Easy", 1190, 702);
+            g.setFont(new Font("Arial", Font.PLAIN, 26));
+            g.setColor(Color.DARK_GRAY);
+
+            g.drawString("S", 270, 609);
+            g.drawString("D", 374, 609);
+            g.drawString("F", 478, 609);
+            g.drawString("Space Bar", 580, 609);
+            g.drawString("J", 784, 609);
+            g.drawString("K", 889, 609);
+            g.drawString("L", 993, 609);
+            g.setColor(Color.LIGHT_GRAY);
+            g.setFont(new Font("Elephant", Font.BOLD, 30));
+            g.drawString("000000", 565, 702);
         }
         paintComponents(g); //paint Component는 추가된 부분을 보여주는 함수입니다. >> add 로 추가된 버튼..
         this.repaint();
