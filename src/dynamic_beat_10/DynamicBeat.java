@@ -30,11 +30,6 @@ public class DynamicBeat extends JFrame {
     private ImageIcon backButtonEnteredImage = new ImageIcon(Main.class.getResource("../image/back_button_enter.png"));
 
 
-    private Image noteRouteImage = new ImageIcon(Main.class.getResource("../image/noteRoute.png")).getImage();
-    private Image noteRouteLineImage = new ImageIcon(Main.class.getResource("../image/noteRouteLine.png")).getImage();
-    private Image judgementLineImage = new ImageIcon(Main.class.getResource("../image/judgementLine.png")).getImage();
-    private Image noteBasicImage = new ImageIcon(Main.class.getResource("../image/noteBasic.png")).getImage();
-    private Image gameInfoImage = new ImageIcon(Main.class.getResource("../image/gameInfo.png")).getImage();
     private Image background = new ImageIcon(Main.class.getResource("../image/title_2.png")).getImage();
 
     private final JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../image/MenuBar.png")));
@@ -64,6 +59,8 @@ public class DynamicBeat extends JFrame {
     private int nowSelected = 0;
 
 
+    public static Game game = new Game();//게임이 여러개 실행되지 못합니다.
+
     public DynamicBeat() {
         setTitle("Dynamic Beat");
         setUndecorated(true);
@@ -71,9 +68,11 @@ public class DynamicBeat extends JFrame {
         setResizable(false);//사용자가 마음대로 크기를 변경할 수 없습니다.
         setLocationRelativeTo(null); //게임 창이 정 중앙에 뜨게 됩니다.
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //게임 창을 종료시에 프로그램 전체가 종료됩니다.
+        setVisible(true);
         setBackground(new Color(0, 0, 0, 0)); //배경 흰색으로 바뀝니다.
         setLayout(null);
-        setVisible(true);
+
+        addKeyListener(new KeyListener());
 
         music.start();
 
@@ -403,51 +402,7 @@ public class DynamicBeat extends JFrame {
             g.drawImage(titleImage, 280, 25, null);
         }
         if (isGameScreen) {
-            g.drawImage(noteRouteImage, 228, 30, null);
-            g.drawImage(noteRouteImage, 332, 30, null);
-            g.drawImage(noteRouteImage, 436, 30, null);
-            g.drawImage(noteRouteImage, 540, 30, null);
-            g.drawImage(noteRouteImage, 640, 30, null);
-            g.drawImage(noteRouteImage, 744, 30, null);
-            g.drawImage(noteRouteImage, 848, 30, null);
-            g.drawImage(noteRouteImage, 952, 30, null);
-            g.drawImage(noteRouteLineImage, 224, 30, null);
-            g.drawImage(noteRouteLineImage, 328, 30, null);
-            g.drawImage(noteRouteLineImage, 432, 30, null);
-            g.drawImage(noteRouteLineImage, 536, 30, null);
-            g.drawImage(noteRouteLineImage, 740, 30, null);
-            g.drawImage(noteRouteLineImage, 844, 30, null);
-            g.drawImage(noteRouteLineImage, 948, 30, null);
-            g.drawImage(noteRouteLineImage, 1052, 30, null);
-            g.drawImage(gameInfoImage, 0, 660, null);
-            g.drawImage(judgementLineImage, 0, 580, null);
-
-            g.drawImage(noteBasicImage, 228, 120, null);
-            g.drawImage(noteBasicImage, 332, 580, null);
-            g.drawImage(noteBasicImage, 436, 500, null);
-            g.drawImage(noteBasicImage, 540, 340, null);
-            g.drawImage(noteBasicImage, 640, 340, null);
-            g.drawImage(noteBasicImage, 744, 325, null);
-            g.drawImage(noteBasicImage, 848, 305, null);
-            g.drawImage(noteBasicImage, 952, 305, null);
-            g.setColor(Color.white);
-            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); //글씨에 안티엘리 적용.
-            g.setFont(new Font("AppleSDGothicNeoR00", Font.PLAIN, 30));
-            g.drawString("볼빨간 사춘기 - 심술", 20, 702);
-            g.drawString("Easy", 1190, 702);
-            g.setFont(new Font("Arial", Font.PLAIN, 26));
-            g.setColor(Color.DARK_GRAY);
-
-            g.drawString("S", 270, 609);
-            g.drawString("D", 374, 609);
-            g.drawString("F", 478, 609);
-            g.drawString("Space Bar", 580, 609);
-            g.drawString("J", 784, 609);
-            g.drawString("K", 889, 609);
-            g.drawString("L", 993, 609);
-            g.setColor(Color.LIGHT_GRAY);
-            g.setFont(new Font("Elephant", Font.BOLD, 30));
-            g.drawString("000000", 565, 702);
+            game.screenDraw(g);
         }
         paintComponents(g); //paint Component는 추가된 부분을 보여주는 함수입니다. >> add 로 추가된 버튼..
         this.repaint();
@@ -494,7 +449,8 @@ public class DynamicBeat extends JFrame {
             background = new ImageIcon(Main.class.getResource("../image/" + trackList.get(nowSelected).getGameImage())).getImage();
             backButton.setVisible(true);
             isGameScreen = true;
-
+            setFocusable(true);
+            requestFocus();
         }
     }
 
