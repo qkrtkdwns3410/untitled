@@ -1,4 +1,4 @@
-package dynamic_beat_8;
+package dynamic_beat_9;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +26,8 @@ public class DynamicBeat extends JFrame {
     private final ImageIcon easyButtonImage = new ImageIcon(Main.class.getResource("../image/easy.png"));
     private final ImageIcon normalButtonImage = new ImageIcon(Main.class.getResource("../image/normal.png"));
     private final ImageIcon hardButtonImage = new ImageIcon(Main.class.getResource("../image/hard.png"));
+    private ImageIcon backButtonImage = new ImageIcon(Main.class.getResource("../image/back_button.png"));
+    private ImageIcon backButtonEnteredImage = new ImageIcon(Main.class.getResource("../image/back_button_enter.png"));
 
 
     private Image background = new ImageIcon(Main.class.getResource("../image/title_2.png")).getImage();
@@ -41,6 +43,7 @@ public class DynamicBeat extends JFrame {
     private final JButton easyButton = new JButton(easyButtonImage);
     private final JButton normalButton = new JButton(normalButtonImage);
     private final JButton hardButton = new JButton(hardButtonImage);
+    private JButton backButton = new JButton(backButtonImage);
 
 
     private int mouseX, mouseY;
@@ -50,6 +53,8 @@ public class DynamicBeat extends JFrame {
     private Image titleImage;
     private Image selectedImage;
     private Music selectedMusic; //코드의 함수화를 통해 간결화
+    Music music = new Music("데자뷰.mp3", true);
+
 
     private int nowSelected = 0;
 
@@ -65,8 +70,8 @@ public class DynamicBeat extends JFrame {
         setLayout(null);
         setVisible(true);
 
-        Music music = new Music("데자뷰.mp3", true);
         music.start();
+
 
         trackList.add(new Track("심술.png", "game_image1_600.jpg", "game_image1_1280.jpg", "심술_selected.mp3", "심술.mp3"));
         trackList.add(new Track("Dejavue.png", "game_image2_600.jpg", "game_image2_1280.jpg", "데자뷰_selected.mp3", "데자뷰.mp3"));
@@ -130,19 +135,8 @@ public class DynamicBeat extends JFrame {
                 Music buttonPressedMusic = new Music("Button_Click_sound.mp3", false);
                 buttonPressedMusic.start(); //시작버튼 클릭시
                 music.close(); //음악이 꺼집니다.
-                selectTrack(0); //첫번째 트랙 설정.
 
-                startButton.setVisible(false); //시작 버튼이 안보이게됩니다.
-                quitButtion.setVisible(false); //나가는 버튼도 안보이게 됩니다.
-                leftButton.setVisible(true);
-                rightButton.setVisible(true);
-                easyButton.setVisible(true);
-                normalButton.setVisible(true);
-                hardButton.setVisible(true);
-
-                background = new ImageIcon(Main.class.getResource("../image/background.jpg")).getImage();
-
-                isMainScreen = true;
+                enterMain();
             }
 
         });
@@ -264,7 +258,7 @@ public class DynamicBeat extends JFrame {
             public void mousePressed(MouseEvent e) {
                 Music buttonPressedMusic = new Music("Button_Click_sound.mp3", false);
                 buttonPressedMusic.start();
-                gameStart(nowSelected,"easy");
+                gameStart(nowSelected, "easy");
 
                 //난이도 쉬움 이벤트
             }
@@ -296,7 +290,7 @@ public class DynamicBeat extends JFrame {
             public void mousePressed(MouseEvent e) {
                 Music buttonPressedMusic = new Music("Button_Click_sound.mp3", false);
                 buttonPressedMusic.start();
-                gameStart(nowSelected,"normal");
+                gameStart(nowSelected, "normal");
 
                 //난이도 노멀 이벤트
             }
@@ -328,12 +322,45 @@ public class DynamicBeat extends JFrame {
             public void mousePressed(MouseEvent e) {
                 Music buttonPressedMusic = new Music("Button_Click_sound.mp3", false);
                 buttonPressedMusic.start();
-                gameStart(nowSelected,"hard");
+                gameStart(nowSelected, "hard");
             }
 
         });
 
         add(hardButton);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//백버튼
+        backButton.setVisible(false);
+
+        backButton.setBounds(20, 50, 60, 60);
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
+        backButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                backButton.setIcon(backButtonEnteredImage); //마우스가 올라가 있으면 엔터드 이미지로 변경됩니다.
+                backButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); //손모양 커서를 가집니다. //종료 버튼 누를때..
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                backButton.setIcon(backButtonImage);//마우스 안올라 가 있을때 베이직 이미지로 변경됩니다.
+                backButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); //손모양 커서를 가집니다. //종료 버튼 누를때..
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Music buttonPressedMusic = new Music("Button_Click_sound.mp3", false);
+                buttonPressedMusic.start();
+
+                backMain();
+            }
+
+        });
+
+        add(backButton);
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         menuBar.setBounds(0, 0, 1280, 30);
@@ -413,7 +440,39 @@ public class DynamicBeat extends JFrame {
             hardButton.setVisible(false);
 
             background = new ImageIcon(Main.class.getResource("../image/" + trackList.get(nowSelected).getGameImage())).getImage();
+            backButton.setVisible(true);
 
         }
+    }
+
+    public void backMain() {
+        isMainScreen = true;
+        leftButton.setVisible(true);
+        rightButton.setVisible(true);
+        easyButton.setVisible(true);
+        normalButton.setVisible(true);
+        hardButton.setVisible(true);
+
+        background = new ImageIcon(Main.class.getResource("../image/background.jpg")).getImage();
+        backButton.setVisible(false);
+        selectTrack(nowSelected);
+    }
+
+    public void enterMain() {
+        selectTrack(0); //첫번째 트랙 설정.
+
+        startButton.setVisible(false); //시작 버튼이 안보이게됩니다.
+        quitButtion.setVisible(false); //나가는 버튼도 안보이게 됩니다.
+        background = new ImageIcon(Main.class.getResource("../image/background.jpg")).getImage();
+
+        leftButton.setVisible(true);
+        rightButton.setVisible(true);
+        easyButton.setVisible(true);
+        normalButton.setVisible(true);
+        hardButton.setVisible(true);
+
+
+        isMainScreen = true;
+
     }
 }
